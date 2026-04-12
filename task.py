@@ -1,24 +1,34 @@
 import argparse
 
+# parser setup
+
 parser = argparse.ArgumentParser(description="Task Tracker CLI")
 subparser = parser.add_subparsers(dest="command")
 
+# subcommand definitions
+
 subparser.add_parser("list")
-subparser.add_parser("add")
-subparser.add_parser("delete")
 subparser.add_parser("mark-done")
 subparser.add_parser("mark-in-progress")
 
+add_parser = subparser.add_parser("add")
+add_parser.add_argument("description")
+
+delete_parser = subparser.add_parser("delete")
+delete_parser.add_argument("id")
+
+update_parser = subparser.add_parser("update")
+update_parser.add_argument("id")
+update_parser.add_argument("description")
+
+# parse input
+
 args = parser.parse_args()
 
-add_parser = subparser.add_parser("add")
-
-# tasks[] = parser.add_subparsers(dest"task")
+# command handlers (placeholder)
 
 if args.command == "add":
-    add_parser.add_argument("description")
-    print("task" + args.description + "adicionada") # fazer um terceiro subparser? 
-if args.command == "list":
-    print("as suas tarefas atuais sao:")
+  print("task '" + args.description + "' added") 
 
-# insere aqui o que foi adicionado pelo "add"
+if args.command == "list":
+    print("current tasks:")
