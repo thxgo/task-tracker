@@ -28,7 +28,16 @@ args = parser.parse_args()
 # command handlers (placeholder)
 
 if args.command == "add":
-  print("task '" + args.description + "' added") 
+    print("task '" + args.description + "' added") 
 
 if args.command == "list":
     print("current tasks:")
+
+# load tasks
+
+try:
+    with open("tasks.json", "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    with open("tasks.json", "w") as f:
+        f.write("[]")    
