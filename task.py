@@ -1,4 +1,5 @@
 import argparse
+import json
 
 # parser setup
 
@@ -25,6 +26,17 @@ update_parser.add_argument("description")
 
 args = parser.parse_args()
 
+# load tasks
+
+try:
+    with open("tasks.json", "r") as f:
+        content = f.read()
+        tasks = json.loads(content)
+except FileNotFoundError:
+    with open("tasks.json", "w") as f:
+        f.write("[]") 
+    tasks = []
+
 # command handlers (placeholder)
 
 if args.command == "add":
@@ -32,12 +44,3 @@ if args.command == "add":
 
 if args.command == "list":
     print("current tasks:")
-
-# load tasks
-
-try:
-    with open("tasks.json", "r") as f:
-        content = f.read()
-except FileNotFoundError:
-    with open("tasks.json", "w") as f:
-        f.write("[]")    
