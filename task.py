@@ -63,4 +63,6 @@ if args.command == "add":
     print("task '" + args.description + "' added") 
 
 if args.command == "list":
-    print("current tasks:")
+    print("current tasks:\n")
+    for t in tasks:
+        print(f"{t['id']} - {t['description']} [{t['status']}]")
