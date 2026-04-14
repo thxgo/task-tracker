@@ -46,7 +46,7 @@ if len(tasks) == 0:
     new_id = 1
 else:
     new_id = max(tasks, key=lambda t: t["id"])["id"] + 1
-    
+
 # command handlers (placeholder)
 
 if args.command == "add":
@@ -66,3 +66,10 @@ if args.command == "list":
     print("current tasks:\n")
     for t in tasks:
         print(f"{t['id']} - {t['description']} [{t['status']}]")
+
+if args.command == "delete":
+    task_id = int(args.id)
+    tasks = [task for task in tasks if task["id"] != task_id]
+    with open("tasks.json", "w") as f:
+        f.write(json.dumps(tasks))
+    print("task '" + args.id + "' removed")
