@@ -1,5 +1,6 @@
 import argparse
 import json
+from datetime import datetime
 
 # parser setup
 
@@ -37,9 +38,28 @@ except FileNotFoundError:
         f.write("[]") 
     tasks = []
 
+# set timestamp and generate new task id
+
+now = datetime.now().isoformat()
+
+if len(tasks) == 0:
+    new_id = 1
+else:
+    new_id = max(tasks, key=lambda t: t["id"])["id"] + 1
+    
 # command handlers (placeholder)
 
 if args.command == "add":
+    new_task = {
+            "id": new_id,
+            "description": args.description,
+            "status": "todo",
+            "createdAt": now,
+            "updatedAt": now
+    }
+    tasks.append(new_task)
+    with open("tasks.json", "w") as f:
+        f.write(json.dumps(tasks))
     print("task '" + args.description + "' added") 
 
 if args.command == "list":
