@@ -73,3 +73,13 @@ if args.command == "delete":
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
     print("task '" + args.id + "' removed")
+
+if args.command == "update":
+    task_id = int(args.id)
+    for t in tasks:
+        if t["id"] == task_id:
+            t["description"] = args.description
+            t["updatedAt"] = now
+    with open("tasks.json", "w") as f:
+        f.write(json.dumps(tasks))
+    print("task '" + args.id + "' updated")
