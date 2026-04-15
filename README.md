@@ -21,4 +21,16 @@ python3 task.py [arguments]
 | `list [status]`| List tasks, being possible to filter by status |
 | `update [id "updated description"]` | Update a task description |
 | `mark-done [id]` | Update task status to done |
-| `mark-in-progress [id]` | Update task status to in-progress |
+| `mark-in-progress [id]` | Update task status to in-progress |## Makefile
+
+## Makefile
+
+```bash
+make list
+make list status=todo
+make add description="Buy groceries"
+make delete id=1
+make update id=1 description="Updated description"
+make mark-done id=1
+make mark-in-progress id=1
+```
