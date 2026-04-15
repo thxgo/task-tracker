@@ -9,7 +9,6 @@ subparser = parser.add_subparsers(dest="command")
 
 # subcommand definitions
 
-
 list_parser = subparser.add_parser("list")
 list_parser.add_argument("status", nargs="?", default=None)
 
@@ -66,23 +65,31 @@ if args.command == "add":
     tasks.append(new_task)
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
-    print("task '" + args.description + "' added") 
+    print(f"task '{ args.description}' added") 
 
 if args.command == "list":
-    if args.status:
-        print(f"{args.status} tasks:\n")
+    if len(tasks) == 0:
+        print("no tasks found")
     else:
-        print("all tasks:\n")
-    for t in tasks:
-        if args.status is None or t["status"] == args.status:
-            print(f"{t['id']} - {t['description']} [{t['status']}]")
+        if args.status:
+            print(f"{args.status} tasks:\n")
+        else:
+            print("all tasks:\n")
+
+        for t in tasks:
+            if not args.status or t["status"] == args.status:
+                print(f"{t['id']} - {t['description']} [{t['status']}]")
 
 if args.command == "delete":
     task_id = int(args.id)
-    tasks = [task for task in tasks if task["id"] != task_id]
-    with open("tasks.json", "w") as f:
-        f.write(json.dumps(tasks))
-    print("task '" + args.id + "' removed")
+    task_found = any(t["id"] == task_id for t in tasks)
+    if task_found:
+        tasks = [task for task in tasks if task["id"] != task_id]
+        with open("tasks.json", "w") as f:
+            f.write(json.dumps(tasks))
+        print(f"task {args.id} removed")
+    else:
+        print(f"task {task_id} not found")   
 
 if args.command == "update":
     task_id = int(args.id)
@@ -92,7 +99,7 @@ if args.command == "update":
             t["updatedAt"] = now
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
-    print("task '" + args.id + "' updated")
+    print(f"task {args.id} updated")
 
 if args.command == "mark-done":
     task_id = int (args.id)
@@ -102,7 +109,7 @@ if args.command == "mark-done":
             t["updatedAt"] = now
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
-    print("task '" + args.id + "' marked done")
+    print(f"task {task_id} marked done")
 
 if args.command == "mark-in-progress":
     task_id = int (args.id)
@@ -112,4 +119,4 @@ if args.command == "mark-in-progress":
             t["updatedAt"] = now
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
-    print("task '" + args.id + "' marked in progress")
+    print(f"task {task_id} marked in progress")
