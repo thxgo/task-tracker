@@ -10,8 +10,12 @@ subparser = parser.add_subparsers(dest="command")
 # subcommand definitions
 
 subparser.add_parser("list")
-subparser.add_parser("mark-done")
-subparser.add_parser("mark-in-progress")
+
+done_parser = subparser.add_parser("mark-done")
+done_parser.add_argument("id")
+
+progress_parser = subparser.add_parser("mark-in-progress")
+progress_parser.add_argument("id")
 
 add_parser = subparser.add_parser("add")
 add_parser.add_argument("description")
@@ -83,3 +87,22 @@ if args.command == "update":
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
     print("task '" + args.id + "' updated")
+
+if args.command == "mark-done":
+    task_id = int (args.id)
+    for t in tasks:
+        if t["id"] == task_id:
+            t["status"] = "done"
+            t["updatedAt"] = now
+    with open("tasks.json", "w") as f:
+        f.write(json.dumps(tasks))
+    print("task '" + args.id + "' marked done")
+if args.command == "mark-in-progress":
+    task_id = int (args.id)
+    for t in tasks:
+        if t["id"] == task_id:
+            t["status"] = "in-progress"
+            t["updatedAt"] = now
+    with open("tasks.json", "w") as f:
+        f.write(json.dumps(tasks))
+    print("task '" + args.id + "' marked in progress")
