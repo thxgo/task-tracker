@@ -9,7 +9,9 @@ subparser = parser.add_subparsers(dest="command")
 
 # subcommand definitions
 
-subparser.add_parser("list")
+
+list_parser = subparser.add_parser("list")
+list_parser.add_argument("status", nargs="?", default=None)
 
 done_parser = subparser.add_parser("mark-done")
 done_parser.add_argument("id")
@@ -67,9 +69,13 @@ if args.command == "add":
     print("task '" + args.description + "' added") 
 
 if args.command == "list":
-    print("current tasks:\n")
+    if args.status:
+        print(f"{args.status} tasks:\n")
+    else:
+        print("all tasks:\n")
     for t in tasks:
-        print(f"{t['id']} - {t['description']} [{t['status']}]")
+        if args.status is None or t["status"] == args.status:
+            print(f"{t['id']} - {t['description']} [{t['status']}]")
 
 if args.command == "delete":
     task_id = int(args.id)
@@ -97,6 +103,7 @@ if args.command == "mark-done":
     with open("tasks.json", "w") as f:
         f.write(json.dumps(tasks))
     print("task '" + args.id + "' marked done")
+
 if args.command == "mark-in-progress":
     task_id = int (args.id)
     for t in tasks:
